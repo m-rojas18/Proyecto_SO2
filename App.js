@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button, Alert } from 'react-native';
 import { Image } from 'react-native'; //COMPONENTE USADO PARA IMAGENES
@@ -17,7 +17,7 @@ export default function App() {
     //USAR PROPS. Se llama al nombre del prop para usarlo (Greeting) y se insertan sus parametro
     //BUTTON. Usado para crear botones
     //ALERT. Crea ventana con un mensaje adentro
-    <View style={styles.container1}>
+    /*
       <Greeting name = 'Miguel'/>
       <Greeting name = 'Jose'/>
       <Separator />
@@ -28,7 +28,19 @@ export default function App() {
       <Button title="Boton 1" onPress={() => Alert.alert('Presionaste el boton 1')}/>
       <Separator />
       <Button title="Boton 2" color="#f194ff" onPress={() => Alert.alert('Presionaste el boton Rosa')} />
-      <ShowButtons />
+    */
+    <View style={styles.container1}>
+      <View>
+      <Text style={{
+        fontSize: 30,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        paddingBottom: 12,
+      }}>
+        BIENVENIDO!
+      </Text>
+      </View>
+      <LoadButtons />
       <StatusBar style="auto" />
     </View>
   );
@@ -45,12 +57,14 @@ class Greeting extends Component {
   }
 }
 
-class ShowButtons extends Component {
+class LoadButtons extends Component {
   render() {
     return (
-      <View style={[styles.separator, {flexDirection: "row"}]}>
-        <IndButton name = "Row 1"/>
-        <IndButton name = "Row 2"/>
+      <View style={[styles.separatorButton, {flexDirection: "column"}]}>
+        <IndButton name = "Almacenar"/>
+        <IndButton name = "Leer"/>
+        <IndButton name = "Listar"/>
+        <IndButton name = "Borrar"/>
       </View>
     );
   }
@@ -67,9 +81,49 @@ class IndButton extends Component
   }
 }
 
+class Almacenar extends Component{
+  render(){
+    return (
+      <View style={styles.container1}>
+        
+      </View>
+    );
+  }
+}
+
+class Leer extends Component{
+  render(){
+    return (
+      <View style={styles.container1}>
+
+      </View>
+    );
+  }
+}
+
+class Borrar extends Component{
+  render(){
+    return (
+      <View style={styles.container1}>
+        
+      </View>
+    );
+  }
+}
+
+class Listar extends Component{
+  render(){
+    return (
+      <View style={styles.container1}>
+        
+      </View>
+    );
+  }
+}
+
 //SEPARATOR. Para agregar espacio entre componentes y demas
 const Separator = () => (
-  <View style={styles.separator} />
+  <View style={styles.separatorText} />
 );
 
 //Variable STYLES: Se utiliza StyleSheet para crear un estilo deseado
@@ -77,18 +131,12 @@ const styles = StyleSheet.create({
   container1: {
     flex: 1,
     justifyContent: 'center',
-    marginHorizontal: 16,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-  },
-  container2: {
-    flex: 1,
-    justifyContent: 'center',
-    marginHorizontal: 16,
-    backgroundColor: '#d3d3d3',
+    marginHorizontal: 0,
+    backgroundColor: '#ffe4c4',
     alignItems: 'center',
   },
   title: {
+    flex: 1,
     textAlign: 'center',
     marginVertical: 8,
   },
@@ -96,15 +144,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  separator: {
+  separatorText: {
     marginVertical: 8,
     borderBottomColor: '#737373',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
+  separatorButton: {
+    marginVertical: 50,
+    borderBottomColor: '#737373',
+  },
   boton: {
-    flex: 1,
+    marginVertical: 15,
     justifyContent: 'center',
-    backgroundColor: "blue",
-    marginHorizontal: 16,
+    marginHorizontal: 5,
   },
 });
