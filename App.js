@@ -1,113 +1,175 @@
-import React, { Component, useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, Alert } from 'react-native';
-import { Image } from 'react-native'; //COMPONENTE USADO PARA IMAGENES
+import * as React from 'react';
+import { SafeAreaView, FlatList, StyleSheet, Button, View, Text, StatusBar } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-export default function App() {
-  //PIC. variable que estoy utilizando para guardar URL de imagen que quiero mostrar
-  let pic = {
-    uri: 'https://thumbs.dreamstime.com/b/dise%C3%B1o-del-confeti-de-la-celebraci%C3%B3n-41244387.jpg'
-  };
+//Arreglo de datos dummy
+const DATA = [
+  {
+    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+    title: 'Primero',
+  },
+  {
+    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+    title: 'Segundo',
+  },
+  {
+    id: '58694a0f-3da1-471f-bd96-145571e29d72',
+    title: 'Tercero',
+  },
+];
 
+//NAVIGATION. ayuda con la navegacion entre paginas
+function HomeScreen({ navigation }) {
   return (
-    /*VIEW. Modifica el Estilo que se usa para lo que se muestra.
-    todo lo que este encerrado dentro de VIEW tendra el estilo deseado*/
-    //TEXT. Se usa para mostrar texto
-    //IMAGE. Muestra una imagen. en este caso, se muestra la imagen guardada dentro de PIC
-    //USAR PROPS. Se llama al nombre del prop para usarlo (Greeting) y se insertan sus parametro
-    //BUTTON. Usado para crear botones
-    //ALERT. Crea ventana con un mensaje adentro
-    /*
-      <Greeting name = 'Miguel'/>
-      <Greeting name = 'Jose'/>
-      <Separator />
-      <Text>Estoy usando React Native!</Text>
-      <Separator />
-      <Image source={pic} style={{width: 200, height: 110}}/>
-      <Separator />
-      <Button title="Boton 1" onPress={() => Alert.alert('Presionaste el boton 1')}/>
-      <Separator />
-      <Button title="Boton 2" color="#f194ff" onPress={() => Alert.alert('Presionaste el boton Rosa')} />
-    */
-    <View style={styles.container1}>
-      <View>
-      <Text style={styles.title}>BIENVENIDO!</Text>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffe4c4' }}>
+      <Text style = {{fontSize: 30, fontWeight: 'bold'}}>BIENVENIDO!</Text>
+      <Separator/>
+      <View style = {{marginVertical: 10, borderBottomColor: '#737373'}}>
+        <Button
+          title="Almacenar"
+          onPress={() => navigation.navigate('Almacenar')}
+        />
+        <Separator/>
+        <Button
+          title="Leer"
+          onPress={() => navigation.navigate('Leer')}
+        />
+        <Separator/>
+        <Button
+          title="Listar Archivos"
+          onPress={() => navigation.navigate('Archivos')}
+        />
+        <Separator/>
+        <Button
+          title="Borrar"
+          onPress={() => navigation.navigate('Borrar')}
+        />
+        <Separator/>
       </View>
-      <LoadButtons />
-      <StatusBar style="auto" />
     </View>
   );
 }
 
-//PROPS. se puede crear un Prop para utilizarlo de la misma manera que se haria una funcion
-class Greeting extends Component {
-  render() {
-    return (
-      <View style={{alignItems: 'center'}}>
-        <Text>Hola {this.props.name}!</Text>
-      </View>
-    );
-  }
+//PANTALLA DE EJEMPLO
+/*
+function DetailsScreen({ navigation }) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffe4c4' }}>
+      <Text style = {{fontSize: 30, fontWeight: 'bold'}}>DETAILS!</Text>
+      <Button
+        title="Volver a inicio"
+        onPress={() => navigation.navigate('Home')}
+      />
+    </View>
+  );
+}
+*/
+
+//PANTALLA DE "ALMACENAR"
+function AlmacenScreen({ navigation }) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffe4c4' }}>
+      <Text style = {{fontSize: 30, fontWeight: 'bold'}}>ALMACENAMIENTO!</Text>
+      <Separator/>
+      <Button
+        title="Volver a inicio"
+        onPress={() => navigation.navigate('Home')}
+      />
+    </View>
+  );
 }
 
-class LoadButtons extends Component {
-  //VARIABLES QUE SIRVEN COMO FUNCIONES PARA LLAMAR EN (OnPress) EN LOS BOTONES
-  Almacenar = () => {
-    Alert.alert('ALMACENAR');
-  };
-  Leer = () => {
-    Alert.alert('LEER');
-  };
-  LeerArchivos = () => {
-    Alert.alert('LEER ARCHIVOS');
-  };
-  Borrar = () => {
-    Alert.alert('BORRAR');
-  };
-  render() {
-    return (
-      <View style={[styles.separatorButton, {flexDirection: "column"}]}>
-        <Separator/>
-        <Button
-          title ="Almacenar"
-          onPress = {this.Almacenar}
+//PANTALLA DE "LEER"
+function LeerScreen({ navigation }) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffe4c4' }}>
+      <Text style = {{fontSize: 30, fontWeight: 'bold'}}>LEER!</Text>
+      <Separator/>
+      <Button
+        title="Volver a inicio"
+        onPress={() => navigation.navigate('Home')}
+      />
+    </View>
+  );
+}
+
+//PANTALLA DE "LISTAR ARCHIVOS"
+function ArchivosScreen({ navigation }) {
+  const renderItem = ({ item }) => (
+    <Item title={item.title} />
+  );
+  
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffe4c4' }}>
+      <Text style = {{fontSize: 30, fontWeight: 'bold'}}>LISTA DE ARCHIVOS!</Text>
+      <SafeAreaView style={estilo.container1}>
+        <FlatList
+          data={DATA}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
         />
-        <Separator/>
-        <Separator/>
-        <Button
-          title = "Leer"
-          onPress = {this.Leer}
-        />
-        <Separator/>
-        <Separator/>
-        <Button
-          title = "Leer archivos"
-          onPress = {this.LeerArchivos}
-        />
-        <Separator/>
-        <Separator/>
-        <Button
-          title = "Borrar"
-          onPress = {this.Borrar}
-        />
-      </View>
-    );
-  }
+      </SafeAreaView>
+      <Separator/>
+      <Button
+        title="Volver a inicio"
+        onPress={() => navigation.navigate('Home')}
+      />
+    </View>
+  );
+}
+
+//PANTALLA DE "BORRAR"
+function BorrarScreen({ navigation }) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffe4c4' }}>
+      <Text style = {{fontSize: 30, fontWeight: 'bold'}}>BORRAR!</Text>
+      <Separator/>
+      <Button
+        title="Volver a inicio"
+        onPress={() => navigation.navigate('Home')}
+      />
+    </View>
+  );
+}
+
+//STACK. Mantiene un historial de las pantallas que se han visitado
+const Stack = createNativeStackNavigator();
+
+function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Almacenar" component={AlmacenScreen}/>
+        <Stack.Screen name="Leer" component={LeerScreen}/>
+        <Stack.Screen name="Archivos" component={ArchivosScreen}/>
+        <Stack.Screen name="Borrar" component={BorrarScreen}/>
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
 
 //SEPARATOR. Para agregar espacio entre componentes y demas
 const Separator = () => (
-  <View style={styles.separatorText} />
+  <View style={estilo.separatorText} />
+);
+
+const Item = ({ title }) => (
+  <View style={estilo.item}>
+    <Text style={estilo.title}>{title}</Text>
+  </View>
 );
 
 //Variable STYLES: Se utiliza StyleSheet para crear un estilo deseado
-const styles = StyleSheet.create({
+const estilo = StyleSheet.create({
   container1: {
     flex: 1,
     justifyContent: 'center',
     marginHorizontal: 0,
     backgroundColor: '#ffe4c4',
     alignItems: 'center',
+    marginTop: StatusBar.currentHeight || 0,
   },
   title: {
     fontSize: 30,
@@ -133,4 +195,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginHorizontal: 5,
   },
+  item: {
+    backgroundColor: '#f9c2ff',
+    padding: 5,
+    marginVertical: 10,
+    marginHorizontal: 16,
+  },
+  title: {
+    fontSize: 30,
+  },
 });
+
+export default App;
