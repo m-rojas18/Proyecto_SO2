@@ -31,14 +31,7 @@ export default function App() {
     */
     <View style={styles.container1}>
       <View>
-      <Text style={{
-        fontSize: 30,
-        textAlign: 'center',
-        fontWeight: 'bold',
-        paddingBottom: 12,
-      }}>
-        BIENVENIDO!
-      </Text>
+      <Text style={styles.title}>BIENVENIDO!</Text>
       </View>
       <LoadButtons />
       <StatusBar style="auto" />
@@ -58,64 +51,45 @@ class Greeting extends Component {
 }
 
 class LoadButtons extends Component {
+  //VARIABLES QUE SIRVEN COMO FUNCIONES PARA LLAMAR EN (OnPress) EN LOS BOTONES
+  Almacenar = () => {
+    Alert.alert('ALMACENAR');
+  };
+  Leer = () => {
+    Alert.alert('LEER');
+  };
+  LeerArchivos = () => {
+    Alert.alert('LEER ARCHIVOS');
+  };
+  Borrar = () => {
+    Alert.alert('BORRAR');
+  };
   render() {
     return (
       <View style={[styles.separatorButton, {flexDirection: "column"}]}>
-        <IndButton name = "Almacenar"/>
-        <IndButton name = "Leer"/>
-        <IndButton name = "Listar"/>
-        <IndButton name = "Borrar"/>
-      </View>
-    );
-  }
-}
-
-class IndButton extends Component
-{
-  render() {
-    return (
-      <View style={styles.boton}>
-        <Button title={this.props.name} onPress={() => Alert.alert('Presionaste el boton')}/>
-      </View>
-    );
-  }
-}
-
-class Almacenar extends Component{
-  render(){
-    return (
-      <View style={styles.container1}>
-        
-      </View>
-    );
-  }
-}
-
-class Leer extends Component{
-  render(){
-    return (
-      <View style={styles.container1}>
-
-      </View>
-    );
-  }
-}
-
-class Borrar extends Component{
-  render(){
-    return (
-      <View style={styles.container1}>
-        
-      </View>
-    );
-  }
-}
-
-class Listar extends Component{
-  render(){
-    return (
-      <View style={styles.container1}>
-        
+        <Separator/>
+        <Button
+          title ="Almacenar"
+          onPress = {this.Almacenar}
+        />
+        <Separator/>
+        <Separator/>
+        <Button
+          title = "Leer"
+          onPress = {this.Leer}
+        />
+        <Separator/>
+        <Separator/>
+        <Button
+          title = "Leer archivos"
+          onPress = {this.LeerArchivos}
+        />
+        <Separator/>
+        <Separator/>
+        <Button
+          title = "Borrar"
+          onPress = {this.Borrar}
+        />
       </View>
     );
   }
@@ -136,9 +110,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    flex: 1,
+    fontSize: 30,
     textAlign: 'center',
-    marginVertical: 8,
+    fontWeight: 'bold',      
+    paddingBottom: 12,
   },
   fixToText: {
     flexDirection: 'row',
@@ -146,15 +121,15 @@ const styles = StyleSheet.create({
   },
   separatorText: {
     marginVertical: 8,
-    borderBottomColor: '#737373',
+    borderBottomColor: '#ffe4c4',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   separatorButton: {
-    marginVertical: 50,
+    marginVertical: 10,
     borderBottomColor: '#737373',
   },
   boton: {
-    marginVertical: 15,
+    marginVertical: 10,
     justifyContent: 'center',
     marginHorizontal: 5,
   },
