@@ -3,21 +3,8 @@ import { SafeAreaView, FlatList, StyleSheet, Button, View, Text, StatusBar } fro
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-//Arreglo de datos dummy
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'Primero',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Segundo',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Tercero',
-  },
-];
+//Arreglo de datos prueba
+const ARCHIVOS = [{id: '1',title: 'Archivo.txt',},{id: '2',title: 'Musica.mp3',},{id: '3',title: 'Imagen.png',},];
 
 //NAVIGATION. ayuda con la navegacion entre paginas
 function HomeScreen({ navigation }) {
@@ -99,11 +86,8 @@ function ArchivosScreen({ navigation }) {
   const renderItem = ({ item }) => (
     <Item title={item.title} />
   );
-  
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffe4c4' }}>
-      <Text style = {{fontSize: 30, fontWeight: 'bold'}}>LISTA DE ARCHIVOS!</Text>
-      <SafeAreaView style={estilo.container1}>
+  /*
+  <SafeAreaView style={estilos.container1}>
         <FlatList
           data={DATA}
           renderItem={renderItem}
@@ -111,10 +95,15 @@ function ArchivosScreen({ navigation }) {
         />
       </SafeAreaView>
       <Separator/>
-      <Button
-        title="Volver a inicio"
-        onPress={() => navigation.navigate('Home')}
-      />
+  */ 
+     //<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffe4c4' }}>
+  return (
+    <View style={{flex: 1, flexDirection: 'column', backgroundColor: '#ffe4c4'}}>
+        <FlatList 
+          keyExtractor = {(item) => item.id}
+          data = {ARCHIVOS}
+          renderItem = {renderItem}
+        />
     </View>
   );
 }
@@ -152,17 +141,20 @@ function App() {
 
 //SEPARATOR. Para agregar espacio entre componentes y demas
 const Separator = () => (
-  <View style={estilo.separatorText} />
+  <View style={estilos.separatorText} />
 );
 
 const Item = ({ title }) => (
-  <View style={estilo.item}>
-    <Text style={estilo.title}>{title}</Text>
+  /*<View style={estilos.item}>
+    <Text style={estilos.title}>{title}</Text>
+  </View>*/
+  <View style={estilos.contenedorArchivo}> 
+    <Text style={estilos.informacionArchivo}> {title}</Text>
   </View>
 );
 
 //Variable STYLES: Se utiliza StyleSheet para crear un estilo deseado
-const estilo = StyleSheet.create({
+const estilos = StyleSheet.create({
   container1: {
     flex: 1,
     justifyContent: 'center',
@@ -204,6 +196,22 @@ const estilo = StyleSheet.create({
   title: {
     fontSize: 30,
   },
+  tituloPantalla: {
+    fontWeight: 'bold'
+  },
+  contenedorArchivo:{
+    height: 60,   
+    paddingBottom: 5,
+    marginTop: 5,
+    flex: 1,
+    backgroundColor : '#fff',
+    alignItems: 'flex-start',
+    justifyContent: 'center'
+  },
+  informacionArchivo:{
+    fontSize: 16,
+  }
+
 });
 
 export default App;
