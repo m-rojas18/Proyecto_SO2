@@ -4,7 +4,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 //Arreglo de datos prueba
-const ARCHIVOS = [{id: '1',title: 'Archivo.txt',},{id: '2',title: 'Musica.mp3',},{id: '3',title: 'Imagen.png',},];
+const ARCHIVOS = [
+  {id: '1',title: 'Archivo.txt',},
+  {id: '2',title: 'Musica.mp3',},
+  {id: '3',title: 'Imagen.png',},
+];
 
 //NAVIGATION. ayuda con la navegacion entre paginas
 function HomeScreen({ navigation }) {

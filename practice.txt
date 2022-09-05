@@ -8,6 +8,11 @@ LINKS:
 
 https://reactnavigation.org/docs/navigating/
 https://reactnative.dev/docs/components-and-apis
+
+FILE SYSTEM
+
+https://www.waldo.com/blog/react-native-fs
+https://github.com/chirag04/react-native-mail
 */
 
 
