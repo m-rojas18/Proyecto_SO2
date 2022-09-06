@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SafeAreaView, FlatList, StyleSheet, Button, View, Text, StatusBar } from 'react-native';
+import { SafeAreaView, FlatList, StyleSheet, Button, View, Text, StatusBar, TouchableOpacity, Aler, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -9,6 +9,8 @@ const ARCHIVOS = [
   {id: '2',title: 'Musica.mp3',},
   {id: '3',title: 'Imagen.png',},
 ];
+
+
 
 //NAVIGATION. ayuda con la navegacion entre paginas
 function HomeScreen({ navigation }) {
@@ -88,7 +90,9 @@ function LeerScreen({ navigation }) {
 //PANTALLA DE "LISTAR ARCHIVOS"
 function ArchivosScreen({ navigation }) {
   const renderItem = ({ item }) => (
-    <Item title={item.title} />
+    <TouchableOpacity onPress={() => pressHandler()}>
+      <Item title={item.title} />
+    </TouchableOpacity>
   );
   /*
   <SafeAreaView style={estilos.container1}>
@@ -143,6 +147,10 @@ function App() {
   );
 }
 
+const pressHandler = () => {
+  Alert.alert("Aviso", "Presiono el Archivo",
+  [{text: "Ok",}]);
+}
 //SEPARATOR. Para agregar espacio entre componentes y demas
 const Separator = () => (
   <View style={estilos.separatorText} />
