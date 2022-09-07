@@ -27,6 +27,8 @@ https://www.youtube.com/watch?v=WJurrdtZOc0
 
 FILE PICKER (Guardar documentos de toda clase)
 https://blog.logrocket.com/picking-files-react-native-apps-using-react-native-document-picker/
+https://docs.expo.dev/versions/latest/sdk/document-picker/
+https://snack.expo.dev/@ritam/document-picker
 */
 
 

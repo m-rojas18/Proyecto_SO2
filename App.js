@@ -83,6 +83,7 @@ function LeerScreen({ navigation }) {
         title="Volver a inicio"
         onPress={() => navigation.navigate('Home')}
       />
+      <Separator/>
       <Button
       title="Escoger archivo"
       onPress={() => navigation.navigate('Home')}
