@@ -83,6 +83,10 @@ function LeerScreen({ navigation }) {
         title="Volver a inicio"
         onPress={() => navigation.navigate('Home')}
       />
+      <Button
+      title="Escoger archivo"
+      onPress={() => navigation.navigate('Home')}
+      />
     </View>
   );
 }

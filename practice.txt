@@ -3,6 +3,8 @@ DEPENDENCIAS:
 npm install @react-navigation/native
 npm install react-native-screens react-native-safe-area-context
 npm install @react-navigation/native-stack
+npm i react-native-document-picker
+npm react-native run-android
 
 LINKS:
 
@@ -20,6 +22,13 @@ https://github.com/expo/expo/tree/main/packages/expo-file-system#installation-in
 
 VIDEOS
 https://www.youtube.com/watch?v=aCe0h50hyCc
+https://www.youtube.com/playlist?list=PLzzljR-_nWVXKtQV4VSvM_pbRuEFD6QVK
+
+IMAGE PICKER (Guardar imagenes)
+https://www.youtube.com/watch?v=WJurrdtZOc0
+
+FILE PICKER (Guardar documentos de toda clase)
+https://blog.logrocket.com/picking-files-react-native-apps-using-react-native-document-picker/
 */
 
 
