@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { SafeAreaView, FlatList, StyleSheet, Button, View, Text, StatusBar, TouchableOpacity, Aler, Alert } from 'react-native';
+import * as MediaLibrary from 'expo-media-library'
+import { SafeAreaView, FlatList, StyleSheet, Button, View, Text, StatusBar, TouchableOpacity, Aler, Alert, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {DocumentPicker, ImagePicker, Permissions} from 'expo-document-picker';
 
 //Arreglo de datos prueba
 const ARCHIVOS = [
@@ -37,6 +39,16 @@ function HomeScreen({ navigation }) {
         <Button
           title="Borrar"
           onPress={() => navigation.navigate('Borrar')}
+        />
+        <Separator/>
+        <Button
+          title="MediaLibrary"
+          onPress={() => navigation.navigate('Media')}
+        />
+        <Separator/>
+        <Button
+          title="DocumentPicker"
+          onPress={() => navigation.navigate('Document')}
         />
         <Separator/>
       </View>
@@ -135,6 +147,47 @@ function BorrarScreen({ navigation }) {
   );
 }
 
+function MediaScreen({ navigation }) {
+  _mediaLibraryAsync = async () => {
+    let { status } = await MediaLibrary.requestPermissionsAsync()
+    let media = await MediaLibrary.getAssetsAsync({
+      mediaType: ['photo', 'video'],
+    })
+    let video = await MediaLibrary.getAssetInfoAsync(media.assets[0])
+
+    console.log(video);
+  };
+
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffe4c4' }}>
+      <Text style = {{fontSize: 30, fontWeight: 'bold'}}>Media Library prueba</Text>
+      <Separator/>
+      <Button
+        title="Volver a inicio"
+        onPress={() => navigation.navigate('Home')}
+      />
+      <Separator/>
+      <Button
+          onPress={this._mediaLibraryAsync}
+          title="Do MediaLibrary Stuff"
+        />
+    </View>
+  );
+}
+
+function DocumentScreen({ navigation }) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffe4c4' }}>
+      <Text style = {{fontSize: 30, fontWeight: 'bold'}}>Document Picker Test</Text>
+      <Button
+        title="Volver a inicio"
+        onPress={() => navigation.navigate('Home')}
+      />
+      <Separator/>
+      </View>
+  );
+}
+
 //STACK. Mantiene un historial de las pantallas que se han visitado
 const Stack = createNativeStackNavigator();
 
@@ -147,6 +200,8 @@ function App() {
         <Stack.Screen name="Leer" component={LeerScreen}/>
         <Stack.Screen name="Archivos" component={ArchivosScreen}/>
         <Stack.Screen name="Borrar" component={BorrarScreen}/>
+        <Stack.Screen name="Media" component={MediaScreen}/>
+        <Stack.Screen name="Document" component={DocumentScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
