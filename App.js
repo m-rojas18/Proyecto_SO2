@@ -4,17 +4,13 @@ import { FlatList, StyleSheet, Button, View, Text, StatusBar, TouchableOpacity, 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {DocumentPicker, ImagePicker, Permissions} from 'expo-document-picker';
+import AppNavigator from './app/navigation/AppNavigator';
 
-//Arreglo de datos prueba
-const ARCHIVOS = [
-  {id: '1',title: 'Archivo.txt',},
-  {id: '2',title: 'Musica.mp3',},
-  {id: '3',title: 'Imagen.png',},
-];
 
 
 
 //NAVIGATION. ayuda con la navegacion entre paginas
+/*
 function HomeScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffe4c4' }}>
@@ -54,7 +50,7 @@ function HomeScreen({ navigation }) {
       </View>
     </View>
   );
-}
+}*/
 
 //PANTALLA DE EJEMPLO
 /*
@@ -72,6 +68,7 @@ function DetailsScreen({ navigation }) {
 */
 
 //PANTALLA DE "ALMACENAR"
+/*
 function AlmacenScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffe4c4' }}>
@@ -102,16 +99,17 @@ function LeerScreen({ navigation }) {
       />
     </View>
   );
-}
+}*/
 
 //PANTALLA DE "LISTAR ARCHIVOS"
+/*
 function ArchivosScreen({ navigation }) {
   const renderItem = ({ item }) => (
     <TouchableOpacity onPress={() => pressHandler()}>
       <Item title={item.title} />
     </TouchableOpacity>
   );
-  /*
+  
   <SafeAreaView style={estilos.container1}>
         <FlatList
           data={DATA}
@@ -120,7 +118,7 @@ function ArchivosScreen({ navigation }) {
         />
       </SafeAreaView>
       <Separator/>
-  */ 
+   
      //<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffe4c4' }}>
   return (
     <View style={{flex: 1, flexDirection: 'column', backgroundColor: '#ffe4c4'}}>
@@ -131,9 +129,10 @@ function ArchivosScreen({ navigation }) {
         />
     </View>
   );
-}
+}*/
 
 //PANTALLA DE "BORRAR"
+/*
 function BorrarScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffe4c4' }}>
@@ -145,8 +144,8 @@ function BorrarScreen({ navigation }) {
       />
     </View>
   );
-}
-
+}*/
+/*
 function MediaScreen({ navigation }) {
   _mediaLibraryAsync = async () => {
     let { status } = await MediaLibrary.requestPermissionsAsync()
@@ -173,8 +172,8 @@ function MediaScreen({ navigation }) {
         />
     </View>
   );
-}
-
+}*/
+/*
 function DocumentScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffe4c4' }}>
@@ -187,13 +186,14 @@ function DocumentScreen({ navigation }) {
       </View>
   );
 }
-
+*/
 //STACK. Mantiene un historial de las pantallas que se han visitado
-const Stack = createNativeStackNavigator();
+//const Stack = createNativeStackNavigator();
 
 function App() {
   return (
-    <NavigationContainer>
+    <AppNavigator />
+    /*<NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Almacenar" component={AlmacenScreen}/>
@@ -203,10 +203,10 @@ function App() {
         <Stack.Screen name="Media" component={MediaScreen}/>
         <Stack.Screen name="Document" component={DocumentScreen}/>
       </Stack.Navigator>
-    </NavigationContainer>
+    </NavigationContainer>*/
   );
 }
-
+/*
 const pressHandler = () => {
   Alert.alert("Aviso", "Presiono el Archivo",
   [{text: "Ok",}]);
@@ -217,14 +217,14 @@ const Separator = () => (
 );
 
 const Item = ({ title }) => (
-  /*<View style={estilos.item}>
-    <Text style={estilos.title}>{title}</Text>
-  </View>*/
+  //<View style={estilos.item}>
+    //<Text style={estilos.title}>{title}</Text>
+  //</View>
   <View style={estilos.contenedorArchivo}> 
     <Text style={estilos.informacionArchivo}> {title}</Text>
   </View>
 );
-
+*/
 //Variable STYLES: Se utiliza StyleSheet para crear un estilo deseado
 const estilos = StyleSheet.create({
   container1: {
@@ -271,18 +271,8 @@ const estilos = StyleSheet.create({
   tituloPantalla: {
     fontWeight: 'bold'
   },
-  contenedorArchivo:{
-    height: 60,   
-    paddingBottom: 5,
-    marginTop: 5,
-    flex: 1,
-    backgroundColor : '#fff',
-    alignItems: 'flex-start',
-    justifyContent: 'center'
-  },
-  informacionArchivo:{
-    fontSize: 16,
-  }
+
+  
 
 });
 

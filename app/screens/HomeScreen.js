@@ -1,50 +1,55 @@
-import React from "react";
-import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
+import * as React from 'react';
+import {View, Text, StyleSheet, Button} from "react-native";
 
+const Separator = () => (
+  <View style={styles.separatorText} />
+);
 
-const HomeScreen = () => {
+function HomeScreen ({ navigation }){
     return (
-        <View></View>
+        <View style={styles.ventanaInicio}>
+          <Text style={styles.textoVI}>BIENVENIDO!</Text>
+          <Separator/>   
+          <View style={{marginVertical: 10, borderBottomColor: '#737373'}}>
+            <Button 
+              title="Almacenar"
+             
+            />
+            <Separator/>
+            <Button 
+              title="Leer"
+
+            />
+             <Separator/>
+            <Button 
+              title="Listar Archivos"
+              onPress={() => navigation.navigate('Archivos')}
+            />
+            <Separator/>
+            <Button 
+              title="Borrar"
+            />
+          </View>
+        </View>
     );
 }
 
-function HomeScreen({ navigation }) {
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffe4c4' }}>
-        <Text style = {{fontSize: 30, fontWeight: 'bold'}}>BIENVENIDO!</Text>
-        <Separator/>
-        <View style = {{marginVertical: 10, borderBottomColor: '#737373'}}>
-          <Button
-            title="Almacenar"
-            onPress={() => navigation.navigate('Almacenar')}
-          />
-          <Separator/>
-          <Button
-            title="Leer"
-            onPress={() => navigation.navigate('Leer')}
-          />
-          <Separator/>
-          <Button
-            title="Listar Archivos"
-            onPress={() => navigation.navigate('Archivos')}
-          />
-          <Separator/>
-          <Button
-            title="Borrar"
-            onPress={() => navigation.navigate('Borrar')}
-          />
-          <Separator/>
-          <Button
-            title="MediaLibrary"
-            onPress={() => navigation.navigate('Media')}
-          />
-          <Separator/>
-          <Button
-            title="DocumentPicker"
-            onPress={() => navigation.navigate('Document')}
-          />
-          <Separator/>
-        </View>
-      </View>
-    );
-  }
+const styles = StyleSheet.create({
+  ventanaInicio: {
+    flex:1, 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    backgroundColor: '#ffe4c4',
+  },
+  textoVI: {
+    fontSize: 30, 
+    fontWeight: 'bold'
+  },
+  separatorText: {
+    marginVertical: 8,
+    borderBottomColor: '#ffe4c4',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+});
+
+export default HomeScreen;
