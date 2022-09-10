@@ -1,42 +1,38 @@
 import * as React from 'react';
-import { useState, useCallback} from 'react';
+import { useState} from 'react';
 import {View, Text, StyleSheet, Button, Alert} from "react-native";
 import * as DocumentPicker from 'expo-document-picker';
+import ProveedorArchivos, { ArchivosContext } from '../context/ProveedorArchivos';
 
 const Separator = () => (
     <View style={styles.separatorText} />
 );
 
-//PANTALLA DE "ALMACENAR"
 function AlmacenScreen (){
-
+    
+    
     /* Esta variable almacenara todas las respuestas que obtenemos de DocumentPicker view despues de seleccionar
     un archivo*/ 
     const [fileResponse, setFileResponse] = useState([]);
     const elegirArchivo = async () => {
       const result = await DocumentPicker.getDocumentAsync({
         type: ['audio/*', 'image/*', 'text/plain'],
-      });
-        setFileResponse(result);
+        copyToCacheDirectory: false,});
+        /*La opcion de elegir multiples archivos esta falso por Default */
+      setFileResponse(result);
+      Alert.alert(result.uri);
     };
 
   return (
-    <View style={styles.Pantalla}>
-      {fileResponse.map((file, index) => (
-        <Text
-          key={index.toString()}
-          style={styles.uri}
-          numberOfLines={1}
-          ellipsizeMode={'middle'}>
-          {file?.uri}
-        </Text>
-      ))}
-      <Separator/>
-      <Button
-        title="Seleccionar archivo"
-        onPress={(elegirArchivo)}
-      />
-    </View>
+    <ProveedorArchivos>
+      <View style={styles.Pantalla}>
+        <Separator/>
+        <Button
+          title="Seleccionar archivo"
+          onPress={(elegirArchivo)}
+        />
+      </View>
+    </ProveedorArchivos>
   );
 }
 

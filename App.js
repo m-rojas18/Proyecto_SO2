@@ -3,6 +3,7 @@ import * as MediaLibrary from 'expo-media-library'
 import { StyleSheet,StatusBar} from 'react-native';
 import {DocumentPicker, ImagePicker, Permissions} from 'expo-document-picker';
 import AppNavigator from './app/navigation/AppNavigator';
+import ProveedorArchivos from './app/context/ProveedorArchivos';
 
 //NAVIGATION. ayuda con la navegacion entre paginas
 
@@ -51,7 +52,8 @@ function DocumentScreen({ navigation }) {
 
 function App() {
   return (
-    <AppNavigator />
+      <AppNavigator />
+
   );
 }
 //Variable STYLES: Se utiliza StyleSheet para crear un estilo deseado
