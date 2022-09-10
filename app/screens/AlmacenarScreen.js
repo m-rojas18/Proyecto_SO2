@@ -1,20 +1,39 @@
 import * as React from 'react';
+import { useState, useCallback} from 'react';
 import {View, Text, StyleSheet, Button} from "react-native";
-
+import * as DocumentPicker from 'expo-document-picker';
 
 const Separator = () => (
     <View style={styles.separatorText} />
 );
 
 //PANTALLA DE "ALMACENAR"
-function AlmacenScreen({ navigation }) {
+function AlmacenScreen (){
+    const [fileResponse, setFileResponse] = useState([]);
+    const handleDocumentSelection = useCallback(async () => {
+        try {
+          const response = await DocumentPicker.getDocumentAsync({})
+          setFileResponse(response);
+        } catch (err) {
+          console.warn(err);
+        }
+      }, []);
+
   return (
     <View style={styles.Pantalla}>
-      <Text style = {styles.textoVI}>ALMACENAMIENTO!</Text>
+      {fileResponse.map((file, index) => (
+        <Text
+          key={index.toString()}
+          style={styles.uri}
+          numberOfLines={1}
+          ellipsizeMode={'middle'}>
+          {file?.uri}
+        </Text>
+      ))}
       <Separator/>
       <Button
-        title="Volver a inicio"
-        onPress={() => navigation.navigate('Home')}
+        title="Seleccionar archivo"
+        onPress={(handleDocumentSelection)}
       />
     </View>
   );
