@@ -1,150 +1,11 @@
 import * as React from 'react';
 import * as MediaLibrary from 'expo-media-library'
-import { FlatList, StyleSheet, Button, View, Text, StatusBar, TouchableOpacity, Alert, Image } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { StyleSheet,StatusBar} from 'react-native';
 import {DocumentPicker, ImagePicker, Permissions} from 'expo-document-picker';
 import AppNavigator from './app/navigation/AppNavigator';
 
-
-
-
 //NAVIGATION. ayuda con la navegacion entre paginas
-/*
-function HomeScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffe4c4' }}>
-      <Text style = {{fontSize: 30, fontWeight: 'bold'}}>BIENVENIDO!</Text>
-      <Separator/>
-      <View style = {{marginVertical: 10, borderBottomColor: '#737373'}}>
-        <Button
-          title="Almacenar"
-          onPress={() => navigation.navigate('Almacenar')}
-        />
-        <Separator/>
-        <Button
-          title="Leer"
-          onPress={() => navigation.navigate('Leer')}
-        />
-        <Separator/>
-        <Button
-          title="Listar Archivos"
-          onPress={() => navigation.navigate('Archivos')}
-        />
-        <Separator/>
-        <Button
-          title="Borrar"
-          onPress={() => navigation.navigate('Borrar')}
-        />
-        <Separator/>
-        <Button
-          title="MediaLibrary"
-          onPress={() => navigation.navigate('Media')}
-        />
-        <Separator/>
-        <Button
-          title="DocumentPicker"
-          onPress={() => navigation.navigate('Document')}
-        />
-        <Separator/>
-      </View>
-    </View>
-  );
-}*/
 
-//PANTALLA DE EJEMPLO
-/*
-function DetailsScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffe4c4' }}>
-      <Text style = {{fontSize: 30, fontWeight: 'bold'}}>DETAILS!</Text>
-      <Button
-        title="Volver a inicio"
-        onPress={() => navigation.navigate('Home')}
-      />
-    </View>
-  );
-}
-*/
-
-//PANTALLA DE "ALMACENAR"
-/*
-function AlmacenScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffe4c4' }}>
-      <Text style = {{fontSize: 30, fontWeight: 'bold'}}>ALMACENAMIENTO!</Text>
-      <Separator/>
-      <Button
-        title="Volver a inicio"
-        onPress={() => navigation.navigate('Home')}
-      />
-    </View>
-  );
-}
-
-//PANTALLA DE "LEER"
-function LeerScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffe4c4' }}>
-      <Text style = {{fontSize: 30, fontWeight: 'bold'}}>LEER!</Text>
-      <Separator/>
-      <Button
-        title="Volver a inicio"
-        onPress={() => navigation.navigate('Home')}
-      />
-      <Separator/>
-      <Button
-      title="Escoger archivo"
-      onPress={() => navigation.navigate('Home')}
-      />
-    </View>
-  );
-}*/
-
-//PANTALLA DE "LISTAR ARCHIVOS"
-/*
-function ArchivosScreen({ navigation }) {
-  const renderItem = ({ item }) => (
-    <TouchableOpacity onPress={() => pressHandler()}>
-      <Item title={item.title} />
-    </TouchableOpacity>
-  );
-  
-  <SafeAreaView style={estilos.container1}>
-        <FlatList
-          data={DATA}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-        />
-      </SafeAreaView>
-      <Separator/>
-   
-     //<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffe4c4' }}>
-  return (
-    <View style={{flex: 1, flexDirection: 'column', backgroundColor: '#ffe4c4'}}>
-        <FlatList 
-          keyExtractor = {(item) => item.id}
-          data = {ARCHIVOS}
-          renderItem = {renderItem}
-        />
-    </View>
-  );
-}*/
-
-//PANTALLA DE "BORRAR"
-/*
-function BorrarScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffe4c4' }}>
-      <Text style = {{fontSize: 30, fontWeight: 'bold'}}>BORRAR!</Text>
-      <Separator/>
-      <Button
-        title="Volver a inicio"
-        onPress={() => navigation.navigate('Home')}
-      />
-    </View>
-  );
-}*/
 /*
 function MediaScreen({ navigation }) {
   _mediaLibraryAsync = async () => {
@@ -187,44 +48,12 @@ function DocumentScreen({ navigation }) {
   );
 }
 */
-//STACK. Mantiene un historial de las pantallas que se han visitado
-//const Stack = createNativeStackNavigator();
 
 function App() {
   return (
     <AppNavigator />
-    /*<NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Almacenar" component={AlmacenScreen}/>
-        <Stack.Screen name="Leer" component={LeerScreen}/>
-        <Stack.Screen name="Archivos" component={ArchivosScreen}/>
-        <Stack.Screen name="Borrar" component={BorrarScreen}/>
-        <Stack.Screen name="Media" component={MediaScreen}/>
-        <Stack.Screen name="Document" component={DocumentScreen}/>
-      </Stack.Navigator>
-    </NavigationContainer>*/
   );
 }
-/*
-const pressHandler = () => {
-  Alert.alert("Aviso", "Presiono el Archivo",
-  [{text: "Ok",}]);
-}
-//SEPARATOR. Para agregar espacio entre componentes y demas
-const Separator = () => (
-  <View style={estilos.separatorText} />
-);
-
-const Item = ({ title }) => (
-  //<View style={estilos.item}>
-    //<Text style={estilos.title}>{title}</Text>
-  //</View>
-  <View style={estilos.contenedorArchivo}> 
-    <Text style={estilos.informacionArchivo}> {title}</Text>
-  </View>
-);
-*/
 //Variable STYLES: Se utiliza StyleSheet para crear un estilo deseado
 const estilos = StyleSheet.create({
   container1: {

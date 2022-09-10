@@ -13,12 +13,12 @@ function HomeScreen ({ navigation }){
           <View style={{marginVertical: 10, borderBottomColor: '#737373'}}>
             <Button 
               title="Almacenar"
-             
+              onPress={() => navigation.navigate('Almacenar')}
             />
             <Separator/>
             <Button 
               title="Leer"
-
+              onPress={() => navigation.navigate('Leer')}
             />
              <Separator/>
             <Button 
@@ -28,6 +28,7 @@ function HomeScreen ({ navigation }){
             <Separator/>
             <Button 
               title="Borrar"
+              onPress={() => navigation.navigate('Borrar')}
             />
           </View>
         </View>
