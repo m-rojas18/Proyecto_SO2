@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useCallback} from 'react';
-import {View, Text, StyleSheet, Button} from "react-native";
+import {View, Text, StyleSheet, Button, Alert} from "react-native";
 import * as DocumentPicker from 'expo-document-picker';
 
 const Separator = () => (
@@ -9,15 +9,16 @@ const Separator = () => (
 
 //PANTALLA DE "ALMACENAR"
 function AlmacenScreen (){
+
+    /* Esta variable almacenara todas las respuestas que obtenemos de DocumentPicker view despues de seleccionar
+    un archivo*/ 
     const [fileResponse, setFileResponse] = useState([]);
-    const handleDocumentSelection = useCallback(async () => {
-        try {
-          const response = await DocumentPicker.getDocumentAsync({})
-          setFileResponse(response);
-        } catch (err) {
-          console.warn(err);
-        }
-      }, []);
+    const elegirArchivo = async () => {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: ['audio/*', 'image/*', 'text/plain'],
+      });
+        setFileResponse(result);
+    };
 
   return (
     <View style={styles.Pantalla}>
@@ -33,7 +34,7 @@ function AlmacenScreen (){
       <Separator/>
       <Button
         title="Seleccionar archivo"
-        onPress={(handleDocumentSelection)}
+        onPress={(elegirArchivo)}
       />
     </View>
   );
@@ -55,6 +56,10 @@ const styles = StyleSheet.create({
         borderBottomColor: '#ffe4c4',
         borderBottomWidth: StyleSheet.hairlineWidth,
       },
+    uri: {
+      paddingBottom: 8,
+      paddingHorizontal: 18,
+    },
   });
 
 export default AlmacenScreen;
