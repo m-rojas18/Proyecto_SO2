@@ -5,6 +5,8 @@ npm install react-native-screens react-native-safe-area-context
 npm install @react-navigation/native-stack
 expo install expo-media-library
 expo install expo-document-picker
+npm install --save react-native-base64
+npm install @react-native-async-storage/async-storage (o tambien) expo install @react-native-async-storage/async-storage
 
 LINKS:
 
