@@ -9,13 +9,13 @@ export class ProveedorArchivos extends Component {
     constructor(props){
         super(props)
     }
-    state = {
+    /*state = {
         isGranted: 'false'
     }
 
     setisGranted = (isGranted) => {
         this.setState((prevState) => ({isGranted}))
-    }
+    }*/
     permisoAlert = () => {
         Alert.alert("Permiso Requerido", "Esta aplicacion requiere de este permiso para leer archivos y funcionar",
             [{
@@ -27,9 +27,6 @@ export class ProveedorArchivos extends Component {
             ]);
     }
 
-    getArchivo = async () => {
-
-    }
     getPermisos = async () => {
         /* Permission Object Reference
             "canAskAgain": true,
@@ -40,10 +37,10 @@ export class ProveedorArchivos extends Component {
         const permiso =await MediaLibrary.getPermissionsAsync();
         if(permiso.granted){
             //Allow acces to AlmacenarScreen, permsio = 'granted'
-           setisGranted('true');
+       //Error Aqui Unhandled Promise Rejection    setisGranted('true');
         } else {
             //Si el permiso no esta dado y puede preguntar otra vez
-            this.setisGranted('false');
+            //this.setisGranted('false');
             if(!permiso.granted && permiso.canAskAgain){
                 
                 //Pedir el permiso otra vez
@@ -68,11 +65,11 @@ export class ProveedorArchivos extends Component {
         this.getPermisos()
     }
     render(){
-        const {isGranted} = this.state
+       /* const {isGranted} = this.state
         const {setisGranted} = this
-
+*/
         return (
-        <ArchivosContext.Provider value={{isGranted, setisGranted}}>
+        <ArchivosContext.Provider value={{}}>
                         {this.props.children}
         </ArchivosContext.Provider>
         );    
