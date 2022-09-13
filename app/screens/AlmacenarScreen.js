@@ -32,7 +32,7 @@ function AlmacenScreen() {
   /* Esta variable almacenara todas las respuestas que obtenemos de DocumentPicker view despues de seleccionar
   un archivo*/ 
   const [fileResponse, setFileResponse] = useState([]);
-  const [placeHolder, setPlaceHolder] = useState (["Adjuntar Archivos"]);
+  const [placeHolder, setPlaceHolder] = useState ([""]);
   const [nombre, setNombre] = useState();
 
 
@@ -47,8 +47,8 @@ function AlmacenScreen() {
     /*La opcion de elegir multiples archivos esta falso por Default */
     setFileResponse(result);
     console.log(result.uri);
-    const resp = await FileSystem.getInfoAsync(result.uri);
-    console.log(resp);
+    //const resp = await FileSystem.getInfoAsync(result.uri);
+    //console.log(resp);
     
     //setPlaceHolder(result.name);
     /*
