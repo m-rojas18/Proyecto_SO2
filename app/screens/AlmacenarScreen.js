@@ -4,9 +4,10 @@ import {View, Text, StyleSheet, Button, Alert, TextInput} from "react-native";
 import * as DocumentPicker from 'expo-document-picker';
 import ProveedorArchivos from '../context/ProveedorArchivos';
 import { ArchivosContext } from '../context/ProveedorArchivos';
-import { documentDirectory, EncodingType, writeAsStringAsync } from 'expo-file-system';
+import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 import { AsyncStorage } from '@react-native-async-storage/async-storage';
+
 
 function AlmacenScreen() {
     
@@ -31,17 +32,25 @@ function AlmacenScreen() {
   /* Esta variable almacenara todas las respuestas que obtenemos de DocumentPicker view despues de seleccionar
   un archivo*/ 
   const [fileResponse, setFileResponse] = useState([]);
-  const [placeHolder, setPlaceHolder] = useState (["NOMBRE DE IMAGEN AQUI"]);
+  const [placeHolder, setPlaceHolder] = useState (["Adjuntar Archivos"]);
   const [nombre, setNombre] = useState();
 
+
+
+  
+
   const elegirArchivo = async () => {
+
     const result = await DocumentPicker.getDocumentAsync({
-    type: ['audio/*', 'image/*', 'text/plain'],
-    copyToCacheDirectory: false});
+                  type: ['audio/*', 'image/*', 'text/plain'],
+                  copyToCacheDirectory: false});
     /*La opcion de elegir multiples archivos esta falso por Default */
     setFileResponse(result);
-    console.log(result);
-    setPlaceHolder(result.name);
+    console.log(result.uri);
+    const resp = await FileSystem.getInfoAsync(result.uri);
+    console.log(resp);
+    
+    //setPlaceHolder(result.name);
     /*
     {Imagen
         "mimeType": "image/jpeg", "name": "Screenshot_20220911-105253_Package installer.jpg", "size": 222554, 
@@ -121,7 +130,9 @@ function AlmacenScreen() {
     <ProveedorArchivos>
           <View style={styles.Pantalla}>
             <Separator/>
-                <Text>{placeHolder}</Text>
+                <View style={styles.cajaNombreArchivo}> 
+                  <Text >{placeHolder}</Text>
+                </View>
                 <Separator/>
                 <Button
                 title="Seleccionar archivo"
@@ -162,6 +173,13 @@ function AlmacenScreen() {
         paddingHorizontal: 16,
         fontSize: 24,
         fontWeight: "300",
+      },
+      cajaNombreArchivo :{
+        paddingHorizontal: 90,
+        paddingVertical: 10,
+        borderWidth: 3,
+        borderColor: '#000',
+        borderStyle: 'dotted',
       },
     });
 
