@@ -47,7 +47,24 @@ function AlmacenScreen() {
     /*La opcion de elegir multiples archivos esta falso por Default */
     setFileResponse(result);
     setPlaceHolder(result.uri);
-    console.log(result.uri);
+    console.log(result);
+
+    //CODIGO DE MEDIA LIBRARY
+    try {
+      const asset = await MediaLibrary.createAssetAsync("{result.uri}");
+      console.log(asset);
+      const album = await MediaLibrary.getAlbumAsync('Download');
+      console.log(album);
+      if (album == null) {
+        await MediaLibrary.createAlbumAsync('Download', asset, false);
+        console.log("Album == null");
+      } else {
+        await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
+        console.log("Album != null");
+      }
+    } catch (e) {
+      alert(e);
+    }
     //const resp = await FileSystem.getInfoAsync(result.uri);
     //console.log(resp);
     

@@ -7,6 +7,8 @@ expo install expo-media-library
 expo install expo-document-picker
 npm install --save react-native-base64
 npm install @react-native-async-storage/async-storage (o tambien) expo install @react-native-async-storage/async-storage
+npx expo install expo-file-system
+npx expo install expo-media-library
 
 LINKS:
 
