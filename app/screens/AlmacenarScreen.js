@@ -46,6 +46,7 @@ function AlmacenScreen() {
                   copyToCacheDirectory: false});
     /*La opcion de elegir multiples archivos esta falso por Default */
     setFileResponse(result);
+    setPlaceHolder(result.uri);
     console.log(result.uri);
     //const resp = await FileSystem.getInfoAsync(result.uri);
     //console.log(resp);
