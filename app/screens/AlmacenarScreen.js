@@ -40,31 +40,13 @@ function AlmacenScreen() {
   
 
   const elegirArchivo = async () => {
-
     const result = await DocumentPicker.getDocumentAsync({
                   type: ['audio/*', 'image/*', 'text/plain'],
                   copyToCacheDirectory: false});
     /*La opcion de elegir multiples archivos esta falso por Default */
     setFileResponse(result);
-    setPlaceHolder(result.uri);
-    console.log(result);
-
-    //CODIGO DE MEDIA LIBRARY
-    try {
-      const asset = await MediaLibrary.createAssetAsync("{result.uri}");
-      console.log(asset);
-      const album = await MediaLibrary.getAlbumAsync('Download');
-      console.log(album);
-      if (album == null) {
-        await MediaLibrary.createAlbumAsync('Download', asset, false);
-        console.log("Album == null");
-      } else {
-        await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
-        console.log("Album != null");
-      }
-    } catch (e) {
-      alert(e);
-    }
+    setPlaceHolder(result.name);
+    //console.log(result);
     //const resp = await FileSystem.getInfoAsync(result.uri);
     //console.log(resp);
     
@@ -78,10 +60,47 @@ function AlmacenScreen() {
     {"mimeType": "audio/mpeg", "name": "Over the Horizon", "size": 4685824, "type": "success", 
     "uri": "content://com.android.providers.media.documents/document/audio%3A14"}
     Archivo texto
+
      {"mimeType": "text/plain", "name": "practice.txt", "size": 5205, 
      "type": "success", "uri": "content://com.android.providers.downloads.documents/document/1036"}
     */ 
   };
+  const AlmacenarArchivo = async () => {
+
+    const permiso = await MediaLibrary.requestPermissionsAsync();
+    if(permiso.granted){
+
+      var reader = new FileReader();
+      let fileUri = FileSystem.documentDirectory + "Hola.bin";
+      //const hola = JSON.stringify(fileResponse);
+      console.log(hola);
+      await FileSystem.writeAsStringAsync(fileUri,fileResponse, {encoding: FileSystem.EncodingType.Base64});
+      /*let fileUri = FileSystem.documentDirectory + "Hola.bin";
+      
+      console.log(fileUri);*/
+      //const hola = await FileSystem.readDirectoryAsync(FileSystem.documentDirectory);
+      //console.log(hola);
+      
+      /*
+      const leer = await  FileSystem.readAsStringAsync(fileUri, {encoding: FileSystem.EncodingType.Base64});
+      console.log(leer);*/
+      //const existeArchivo = FileSystem.getInfoAsync(FileSystem.documentDirectory + "Hola.txt");
+      //console.log((await existeArchivo).size);
+      /*const asset = await MediaLibrary.createAssetAsync(fileUri);
+      await MediaLibrary.createAlbumAsync("Download", asset, false);*/
+      //
+      
+
+      //console.log((await existeArchivo).exists)
+     
+      //await FileSystem.deleteAsync(FileSystem.documentDirectory + "Hola.txt");
+      //const leerDirectorio = FileSystem.readDirectoryAsync(FileSystem.documentDirectory);
+      //console.log(leerDirectorio);
+
+    }
+    
+   
+  }
   
   /*
   const AlmacenarArchivo = async () => {
@@ -155,6 +174,11 @@ function AlmacenScreen() {
                 <Button
                 title="Seleccionar archivo"
                 onPress={elegirArchivo}
+                />
+                <Separator/>
+                <Button
+                title="Almacenar Archivo"
+                onPress={AlmacenarArchivo}
                 />
                 <Separator/>
           </View>

@@ -11,15 +11,34 @@ import * as MediaLibrary from 'expo-media-library';
 
 function App() {
 
+  const utf8 = require('utf8');
   const escribirBinario = async () => {
 
     const permiso = await MediaLibrary.requestPermissionsAsync();
     if(permiso.granted){
-      let fileUri = FileSystem.documentDirectory + "Hola.txt";
-      //await FileSystem.writeAsStringAsync(fileUri,"Hola Mundo123", {encoding: FileSystem.EncodingType.UTF8});
-      console.log(fileUri);
-      const leer = await  FileSystem.readAsStringAsync(fileUri);
-      console.log(leer);
+      const revisarExiste = FileSystem.getInfoAsync(FileSystem.documentDirectory + "Hola.bin");
+      let fileUri = FileSystem.documentDirectory + "Hola.bin";
+      if(!(await revisarExiste).exists){
+        console.log((await revisarExiste).exists);
+        console.log('No existe el archivo');
+        const metadatos = utf8.encode('Numero de Archivos: 0\n');
+        await FileSystem.writeAsStringAsync(fileUri, 'Numero Archivos 0', {encoding: FileSystem.EncodingType.Base64})
+      } else {
+        console.log('Existe el archivo binario');
+        const leer = await  FileSystem.readAsStringAsync(fileUri, {encoding: FileSystem.EncodingType.Base64});
+        //await FileSystem.deleteAsync(FileSystem.documentDirectory + "Hola.bin");
+        console.log(leer);
+      }
+      
+
+     // await FileSystem.writeAsStringAsync(fileUri,"Hola Mundo123", {encoding: FileSystem.EncodingType.Base64});
+      //console.log(fileUri);
+      //const hola = await FileSystem.readDirectoryAsync(FileSystem.documentDirectory);
+      //console.log(hola);
+      
+      /*
+      const leer = await  FileSystem.readAsStringAsync(fileUri, {encoding: FileSystem.EncodingType.Base64});
+      console.log(leer);*/
       //const existeArchivo = FileSystem.getInfoAsync(FileSystem.documentDirectory + "Hola.txt");
       //console.log((await existeArchivo).size);
       /*const asset = await MediaLibrary.createAssetAsync(fileUri);
