@@ -1,56 +1,46 @@
 import * as React from 'react';
-import * as MediaLibrary from 'expo-media-library'
 import { StyleSheet,StatusBar} from 'react-native';
-import {DocumentPicker, ImagePicker, Permissions} from 'expo-document-picker';
+import { useEffect } from 'react';
 import AppNavigator from './app/navigation/AppNavigator';
 import ProveedorArchivos from './app/context/ProveedorArchivos';
+import * as FileSystem from 'expo-file-system';
+import * as MediaLibrary from 'expo-media-library';
+// Requests permissions for external directory
 
-//NAVIGATION. ayuda con la navegacion entre paginas
 
-/*
-function MediaScreen({ navigation }) {
-  _mediaLibraryAsync = async () => {
-    let { status } = await MediaLibrary.requestPermissionsAsync()
-    let media = await MediaLibrary.getAssetsAsync({
-      mediaType: ['photo', 'video'],
-    })
-    let video = await MediaLibrary.getAssetInfoAsync(media.assets[0])
-
-    console.log(video);
-  };
-
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffe4c4' }}>
-      <Text style = {{fontSize: 30, fontWeight: 'bold'}}>Media Library prueba</Text>
-      <Separator/>
-      <Button
-        title="Volver a inicio"
-        onPress={() => navigation.navigate('Home')}
-      />
-      <Separator/>
-      <Button
-          onPress={this._mediaLibraryAsync}
-          title="Do MediaLibrary Stuff"
-        />
-    </View>
-  );
-}*/
-/*
-function DocumentScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffe4c4' }}>
-      <Text style = {{fontSize: 30, fontWeight: 'bold'}}>Document Picker Test</Text>
-      <Button
-        title="Volver a inicio"
-        onPress={() => navigation.navigate('Home')}
-      />
-      <Separator/>
-      </View>
-  );
-}
-*/
 
 function App() {
+
+  const escribirBinario = async () => {
+
+    const permiso = await MediaLibrary.requestPermissionsAsync();
+    if(permiso.granted){
+      let fileUri = FileSystem.documentDirectory + "Hola.txt";
+      //await FileSystem.writeAsStringAsync(fileUri,"Hola Mundo123", {encoding: FileSystem.EncodingType.UTF8});
+      console.log(fileUri);
+      const leer = await  FileSystem.readAsStringAsync(fileUri);
+      console.log(leer);
+      //const existeArchivo = FileSystem.getInfoAsync(FileSystem.documentDirectory + "Hola.txt");
+      //console.log((await existeArchivo).size);
+      /*const asset = await MediaLibrary.createAssetAsync(fileUri);
+      await MediaLibrary.createAlbumAsync("Download", asset, false);*/
+      //
+      
+
+      //console.log((await existeArchivo).exists)
+     
+      //await FileSystem.deleteAsync(FileSystem.documentDirectory + "Hola.txt");
+      //const leerDirectorio = FileSystem.readDirectoryAsync(FileSystem.documentDirectory);
+      //console.log(leerDirectorio);
+
+    }
+    
+   
+  }
+
+  useEffect(() => {
+    escribirBinario();
+  });
   return (
       <AppNavigator />
 
