@@ -1,13 +1,13 @@
 import React, {Component, createContext} from 'react'
 import { useState, useContext, useEffect} from 'react';
-import {View, Text, StyleSheet, Button, Alert, TextInput} from "react-native";
+import {View, Text, StyleSheet, Button, Image, Alert, TextInput} from "react-native";
 import * as DocumentPicker from 'expo-document-picker';
 import ProveedorArchivos from '../context/ProveedorArchivos';
 import { ArchivosContext } from '../context/ProveedorArchivos';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
-import { AsyncStorage } from '@react-native-async-storage/async-storage';
-
+import * as ImagePicker from 'expo-image-picker';
+import { StorageAccessFramework } from 'expo-file-system';
 
 function AlmacenScreen() {
     
@@ -33,24 +33,17 @@ function AlmacenScreen() {
   un archivo*/ 
   const [fileResponse, setFileResponse] = useState([]);
   const [placeHolder, setPlaceHolder] = useState ([""]);
-  const [nombre, setNombre] = useState();
-
-
-
-  
 
   const elegirArchivo = async () => {
     const result = await DocumentPicker.getDocumentAsync({
-                  type: ['audio/*', 'image/*', 'text/plain'],
+                  type: ['audio/*','image/*', 'text/plain'],
                   copyToCacheDirectory: false});
     /*La opcion de elegir multiples archivos esta falso por Default */
     setFileResponse(result);
     setPlaceHolder(result.name);
-    //console.log(result);
+    console.log(result);
     //const resp = await FileSystem.getInfoAsync(result.uri);
     //console.log(resp);
-    
-    //setPlaceHolder(result.name);
     /*
     {Imagen
         "mimeType": "image/jpeg", "name": "Screenshot_20220911-105253_Package installer.jpg", "size": 222554, 
@@ -67,23 +60,39 @@ function AlmacenScreen() {
   };
   const AlmacenarArchivo = async () => {
 
+    /*Validacion de que el nombre no sea igual*/
+
+
     const permiso = await MediaLibrary.requestPermissionsAsync();
     if(permiso.granted){
+      /*Primero, mover archivos al documentDirectory*/ 
+      let discoUri = FileSystem.documentDirectory + "DiscoDuro/" + fileResponse.name;
+      console.log('\n\n');
+      
+      console.log(fileResponse.uri);
+      console.log('\n\n');
+      console.log(discoUri);
 
-      var reader = new FileReader();
-      let fileUri = FileSystem.documentDirectory + "Hola.bin";
-      //const hola = JSON.stringify(fileResponse);
-      console.log(hola);
-      await FileSystem.writeAsStringAsync(fileUri,fileResponse, {encoding: FileSystem.EncodingType.Base64});
+      /*Eliminar archivo en el dispositivo*/
+      await StorageAccessFramework.deleteAsync(fileResponse.uri);
+      
+    }
+      
+     /*
+      const a = FileSystem.readAsStringAsync(leerImagen, {encoding: FileSystem.EncodingType.Base64});
+      console.log(a);
+      console.log(leerImagen);
+      const leer = await  FileSystem.readAsStringAsync(discoUri);
+      console.log(leer);
+      */
+      //await FileSystem.writeAsStringAsync(fileUri,fileResponse, {encoding: FileSystem.EncodingType.Base64});
       /*let fileUri = FileSystem.documentDirectory + "Hola.bin";
       
       console.log(fileUri);*/
       //const hola = await FileSystem.readDirectoryAsync(FileSystem.documentDirectory);
       //console.log(hola);
       
-      /*
-      const leer = await  FileSystem.readAsStringAsync(fileUri, {encoding: FileSystem.EncodingType.Base64});
-      console.log(leer);*/
+      
       //const existeArchivo = FileSystem.getInfoAsync(FileSystem.documentDirectory + "Hola.txt");
       //console.log((await existeArchivo).size);
       /*const asset = await MediaLibrary.createAssetAsync(fileUri);
@@ -100,7 +109,7 @@ function AlmacenScreen() {
     }
     
    
-  }
+  
   
   /*
   const AlmacenarArchivo = async () => {
@@ -118,63 +127,17 @@ function AlmacenScreen() {
   */
   //const permiso = useContext(ArchivosContext);
 
-  //FUNCIONES QUE USAN ASYNC STORAGE
-  /*
-  const storeData = async () => {
-    try {
-      console.log(fileResponse);
-      await AsyncStorage.setItem('Database', JSON.stringify(fileResponse))
-    } catch (e) {
-      alert(e);
-    }
-  }
-
-  const getData = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('Database')
-      console.log(jsonValue);
-      return jsonValue != null ? JSON.parse(jsonValue) : null;
-    } catch(e) {
-      alert("ERROR");
-    }
-  }
-  
-  //TUTORIAL ASYNC STORAGE
-  const storeName = async () => {
-    try {
-      console.log(nombre);
-      await AsyncStorage.setItem("Database", nombre)
-    } catch (e) {
-      alert(e);
-    }
-  }
-
-  const loadName = async () => {
-    let name = await AsyncStorage.getItem("Database");
-
-    if(name != null)
-    {
-      setNombre(name);
-    }
-  }
-
-  useEffect(() => {
-    loadName()
-  }, [])
-  */
-
   return (
-    <ProveedorArchivos>
           <View style={styles.Pantalla}>
             <Separator/>
                 <View style={styles.cajaNombreArchivo}> 
                   <Text >{placeHolder}</Text>
                 </View>
                 <Separator/>
-                <Button
-                title="Seleccionar archivo"
-                onPress={elegirArchivo}
-                />
+                  <Button
+                  title="Seleccionar archivo"
+                  onPress={elegirArchivo}
+                  />
                 <Separator/>
                 <Button
                 title="Almacenar Archivo"
@@ -182,7 +145,6 @@ function AlmacenScreen() {
                 />
                 <Separator/>
           </View>
-    </ProveedorArchivos>
     );
 }
     const styles = StyleSheet.create({

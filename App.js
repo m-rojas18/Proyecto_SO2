@@ -5,29 +5,26 @@ import AppNavigator from './app/navigation/AppNavigator';
 import ProveedorArchivos from './app/context/ProveedorArchivos';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
-// Requests permissions for external directory
-
-
 
 function App() {
 
-  const utf8 = require('utf8');
-  const escribirBinario = async () => {
+  const escribirDirectorio= async () => {
 
     const permiso = await MediaLibrary.requestPermissionsAsync();
+    let discUri = FileSystem.documentDirectory + "DiscoDuro";
     if(permiso.granted){
-      const revisarExiste = FileSystem.getInfoAsync(FileSystem.documentDirectory + "Hola.bin");
-      let fileUri = FileSystem.documentDirectory + "Hola.bin";
+      const revisarExiste = FileSystem.getInfoAsync(discUri);
       if(!(await revisarExiste).exists){
-        console.log((await revisarExiste).exists);
-        console.log('No existe el archivo');
-        const metadatos = utf8.encode('Numero de Archivos: 0\n');
-        await FileSystem.writeAsStringAsync(fileUri, 'Numero Archivos 0', {encoding: FileSystem.EncodingType.Base64})
+        //No existe el directorio
+        //Creacion de directorio
+        await FileSystem.makeDirectoryAsync(discUri);
+        const a = FileSystem.getInfoAsync(discUri);
       } else {
-        console.log('Existe el archivo binario');
-        const leer = await  FileSystem.readAsStringAsync(fileUri, {encoding: FileSystem.EncodingType.Base64});
-        //await FileSystem.deleteAsync(FileSystem.documentDirectory + "Hola.bin");
-        console.log(leer);
+
+        /*Validar que el tamaño del directorio no pase de 100 MB*/ 
+
+        /*const hola = await FileSystem.readDirectoryAsync(FileSystem.documentDirectory);
+        console.log(hola);*/
       }
       
 
@@ -58,7 +55,7 @@ function App() {
   }
 
   useEffect(() => {
-    escribirBinario();
+    escribirDirectorio();
   });
   return (
       <AppNavigator />

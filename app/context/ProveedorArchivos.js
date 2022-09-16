@@ -3,19 +3,13 @@ import {Text, View, Alert} from 'react-native'
 import * as MediaLibrary from 'expo-media-library';
 
 
-export const ArchivosContext = createContext(true);
+export const ArchivosContext = createContext({});
+
 export class ProveedorArchivos extends Component {
     
     constructor(props){
         super(props)
     }
-    /*state = {
-        isGranted: 'false'
-    }
-
-    setisGranted = (isGranted) => {
-        this.setState((prevState) => ({isGranted}))
-    }*/
     permisoAlert = () => {
         Alert.alert("Permiso Requerido", "Esta aplicacion requiere de este permiso para leer archivos y funcionar",
             [{
@@ -27,7 +21,7 @@ export class ProveedorArchivos extends Component {
             ]);
     }
 
-    getPermisos = async () => {
+    getPermiso = async () => {
         /* Permission Object Reference
             "canAskAgain": true,
             "expires": "never",
@@ -37,7 +31,7 @@ export class ProveedorArchivos extends Component {
         const permiso =await MediaLibrary.getPermissionsAsync();
         if(permiso.granted){
             //Allow acces to AlmacenarScreen, permsio = 'granted'
-       //Error Aqui Unhandled Promise Rejection    setisGranted('true');
+            
         } else {
             //Si el permiso no esta dado y puede preguntar otra vez
             //this.setisGranted('false');
@@ -62,7 +56,7 @@ export class ProveedorArchivos extends Component {
         
     }
     componentDidMount(){
-        this.getPermisos()
+        this.getPermiso()
     }
     render(){
        /* const {isGranted} = this.state
