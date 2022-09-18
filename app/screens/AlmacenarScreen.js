@@ -8,6 +8,7 @@ import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 import * as ImagePicker from 'expo-image-picker';
 import { StorageAccessFramework } from 'expo-file-system';
+import * as Linking from 'expo-linking';
 
 function AlmacenScreen() {
     
@@ -36,7 +37,7 @@ function AlmacenScreen() {
 
   const elegirArchivo = async () => {
     const result = await DocumentPicker.getDocumentAsync({
-                  type: ['audio/*','image/*', 'text/plain'],
+                  type: ['*/*'],
                   copyToCacheDirectory: false});
     /*La opcion de elegir multiples archivos esta falso por Default */
     setFileResponse(result);
@@ -66,15 +67,33 @@ function AlmacenScreen() {
     const permiso = await MediaLibrary.requestPermissionsAsync();
     if(permiso.granted){
       /*Primero, mover archivos al documentDirectory*/ 
-      let discoUri = FileSystem.documentDirectory + "DiscoDuro/" + fileResponse.name;
-      console.log('\n\n');
-      
+      let discoUri = await FileSystem.documentDirectory + "DiscoDuro/" + fileResponse.name;
+      await FileSystem.copyAsync({from: fileResponse.uri, to: discoUri});
+
+      //console.log('\n\n');
       console.log(fileResponse.uri);
       console.log('\n\n');
       console.log(discoUri);
 
       /*Eliminar archivo en el dispositivo*/
-      await StorageAccessFramework.deleteAsync(fileResponse.uri);
+      //await StorageAccessFramework.deleteAsync(fileResponse.uri);
+      
+      await FileSystem.getContentUriAsync(discoUri).then(cUri =>
+        {
+          discoUri = cUri;
+          console.log(discoUri);
+        });
+      console.log(await Linking.canOpenURL(discoUri));
+      let isSupported = await Linking.canOpenURL(discoUri);
+      if(isSupported)
+      {
+        console.log('\n\n');
+        console.log(discoUri);
+        await Linking.openURL(discoUri);
+      }else
+      {
+        Alert.alert("Can't open ${discoUri}");
+      }
       
     }
       
