@@ -1,26 +1,27 @@
-import React, {Component, createContext} from 'react'
+import React from 'react'
 import { useState, useContext, useEffect} from 'react';
 import {View, Text, StyleSheet, Button, Image, Alert, TextInput} from "react-native";
 import * as DocumentPicker from 'expo-document-picker';
-import ProveedorArchivos from '../context/ProveedorArchivos';
 import { ArchivosContext } from '../context/ProveedorArchivos';
 import * as FileSystem from 'expo-file-system';
-import * as MediaLibrary from 'expo-media-library';
-import * as ImagePicker from 'expo-image-picker';
-import { StorageAccessFramework } from 'expo-file-system';
-import * as Linking from 'expo-linking';
 
 function AlmacenScreen() {
-    
+  const {
+    listaArchivos,
+    addArchivo,
+    eliminarArchivo,
+    revisarNombreRep,
+  } = useContext(ArchivosContext);
+
   const Separator = () => (
     <View style={styles.separatorText} />
   );
-
-  
+  const validacionAlert= (mensaje) => {
+    Alert.alert("Error", mensaje,
+        [{text: 'Ok',},]);
+  }
 
  // const verificarPermiso = isGranted => {
-
-
    /* if(isGranted == 'false'){
       Alert.alert("Aviso", "No se a dado el permiso para acceder al sistema de archivos.",
       [{text: "Ok",}]);
@@ -33,18 +34,16 @@ function AlmacenScreen() {
   /* Esta variable almacenara todas las respuestas que obtenemos de DocumentPicker view despues de seleccionar
   un archivo*/ 
   const [fileResponse, setFileResponse] = useState([]);
-  const [placeHolder, setPlaceHolder] = useState ([""]);
+  const [placeHolder, setPlaceHolder] = useState ('Nombre de Archivo');
 
   const elegirArchivo = async () => {
     const result = await DocumentPicker.getDocumentAsync({
-                  type: ['*/*'],
+                  type: ['audio/*','image/*', 'text/plain', 'application/pdf'],
                   copyToCacheDirectory: false});
     /*La opcion de elegir multiples archivos esta falso por Default */
     setFileResponse(result);
     setPlaceHolder(result.name);
-    console.log(result);
-    //const resp = await FileSystem.getInfoAsync(result.uri);
-    //console.log(resp);
+    //console.log(result);
     /*
     {Imagen
         "mimeType": "image/jpeg", "name": "Screenshot_20220911-105253_Package installer.jpg", "size": 222554, 
@@ -61,90 +60,45 @@ function AlmacenScreen() {
   };
   const AlmacenarArchivo = async () => {
 
-    /*Validacion de que el nombre no sea igual*/
-
-
-    const permiso = await MediaLibrary.requestPermissionsAsync();
-    if(permiso.granted){
-      /*Primero, mover archivos al documentDirectory*/ 
-      let discoUri = await FileSystem.documentDirectory + "DiscoDuro/" + fileResponse.name;
-      await FileSystem.copyAsync({from: fileResponse.uri, to: discoUri});
-
-      //console.log('\n\n');
-      console.log(fileResponse.uri);
-      console.log('\n\n');
-      console.log(discoUri);
-
-      /*Eliminar archivo en el dispositivo*/
-      //await StorageAccessFramework.deleteAsync(fileResponse.uri);
-      
-      await FileSystem.getContentUriAsync(discoUri).then(cUri =>
-        {
-          discoUri = cUri;
-          console.log(discoUri);
-        });
-      console.log(await Linking.canOpenURL(discoUri));
-      let isSupported = await Linking.canOpenURL(discoUri);
-      if(isSupported)
-      {
-        console.log('\n\n');
-        console.log(discoUri);
-        await Linking.openURL(discoUri);
-      }else
-      {
-        Alert.alert("Can't open ${discoUri}");
-      }
-      
+    let validar = true;
+    /*1. Validar que haya un archivo seleccionado*/
+    if(placeHolder != 'Nombre de Archivo'){
+      //Se selecciono un arcivo
+    }  else {
+      validar = false;
+      validacionAlert('No se ha seleccionado un archivo para almacenar.');
     }
-      
-     /*
-      const a = FileSystem.readAsStringAsync(leerImagen, {encoding: FileSystem.EncodingType.Base64});
-      console.log(a);
-      console.log(leerImagen);
-      const leer = await  FileSystem.readAsStringAsync(discoUri);
-      console.log(leer);
-      */
-      //await FileSystem.writeAsStringAsync(fileUri,fileResponse, {encoding: FileSystem.EncodingType.Base64});
-      /*let fileUri = FileSystem.documentDirectory + "Hola.bin";
-      
-      console.log(fileUri);*/
-      //const hola = await FileSystem.readDirectoryAsync(FileSystem.documentDirectory);
-      //console.log(hola);
-      
-      
-      //const existeArchivo = FileSystem.getInfoAsync(FileSystem.documentDirectory + "Hola.txt");
-      //console.log((await existeArchivo).size);
-      /*const asset = await MediaLibrary.createAssetAsync(fileUri);
-      await MediaLibrary.createAlbumAsync("Download", asset, false);*/
-      //
-      
 
-      //console.log((await existeArchivo).exists)
-     
-      //await FileSystem.deleteAsync(FileSystem.documentDirectory + "Hola.txt");
-      //const leerDirectorio = FileSystem.readDirectoryAsync(FileSystem.documentDirectory);
-      //console.log(leerDirectorio);
+    /*2. Validacion de que el nombre no sea igual*/
+    let discoUri = FileSystem.documentDirectory + "DiscoDuro/" + fileResponse.name;
+    if(revisarNombreRep(fileResponse.name)){
+      validar = false;
+      validacionAlert('Un archivo en el disco ya tiene ese nombre, cambiarlo para poder almacenar.');
+    } else {/*El archivo no esta en el disco*/}
 
-    }
-    
-   
-  
-  
-  /*
-  const AlmacenarArchivo = async () => {
-    const asset = await MediaLibrary.createAssetAsync(fileResponse.uri);
-
-    console.log(asset.creationTime);
-    const album = await getAlbumAsync('Descargas');
-    if(album == null){
-      await createAlbumAsync('Descargas', asset, false);
+    /*3. Revisar el tamaño del Directorio y si pase de los 100 MBs*/
+    let directoryInfo = await FileSystem.getInfoAsync(FileSystem.documentDirectory + "DiscoDuro");
+    //100 MB-> 104857600 bytes (en binario)
+    if(directoryInfo.size < 104857600){
+      //No ha llegado al limite de 100 MBs
     } else {
-      console.log("Entro");
-      await addAssetsToAlbumAsync([asset], album, false);
+      validar = false;
+      validacionAlert('El disco de la aplicación ya llego a su limite de 100 MBs');
     }
-  }
-  */
-  //const permiso = useContext(ArchivosContext);
+
+    if(validar){
+      //Paso las 3 validaciones, almacenar en app y actualizar lista global
+      await FileSystem.copyAsync({from: fileResponse.uri, to: discoUri});
+      addArchivo(fileResponse.name);
+      Alert.alert("Confirmación", 'Se logro almacenar el archivo exitosamente!',
+      [{text: 'Ok',},]);
+      //Limpiar campo de archivo seleccionado
+      setFileResponse('');
+      setPlaceHolder('Nombre de Archivo');
+    }
+
+    /*Primero, mover archivos al documentDirectory*/
+    }
 
   return (
           <View style={styles.Pantalla}>

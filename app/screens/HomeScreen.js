@@ -8,7 +8,8 @@ const Separator = () => (
 function HomeScreen ({ navigation }){
     return (
         <View style={styles.ventanaInicio}>
-          <Text style={styles.textoVI}>BIENVENIDO!</Text>
+          <Text style={styles.textoVI}>Sistema de Archivos</Text>
+          <Text style={styles.textoVI}>Proyecto - Miguel, Jose</Text>
           <Separator/>   
           <View style={{marginVertical: 10, borderBottomColor: '#737373'}}>
             <Button 
@@ -17,19 +18,10 @@ function HomeScreen ({ navigation }){
             />
             <Separator/>
             <Button 
-              title="Leer"
-              onPress={() => navigation.navigate('Leer')}
-            />
-             <Separator/>
-            <Button 
               title="Listar Archivos"
               onPress={() => navigation.navigate('Archivos')}
             />
             <Separator/>
-            <Button 
-              title="Borrar"
-              onPress={() => navigation.navigate('Borrar')}
-            />
           </View>
         </View>
     );
@@ -43,7 +35,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffe4c4',
   },
   textoVI: {
-    fontSize: 30, 
+    fontSize: 22, 
     fontWeight: 'bold'
   },
   separatorText: {

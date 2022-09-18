@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StyleSheet,StatusBar} from 'react-native';
 import { useEffect } from 'react';
 import AppNavigator from './app/navigation/AppNavigator';
-import ProveedorArchivos from './app/context/ProveedorArchivos';
+import ProveedorArchivos, { ArchivosContext }from './app/context/ProveedorArchivos';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 
@@ -58,8 +58,9 @@ function App() {
     escribirDirectorio();
   });
   return (
+    <ProveedorArchivos>
       <AppNavigator />
-
+    </ProveedorArchivos>
   );
 }
 //Variable STYLES: Se utiliza StyleSheet para crear un estilo deseado
