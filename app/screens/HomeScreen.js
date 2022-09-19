@@ -14,7 +14,7 @@ function HomeScreen ({ navigation }){
       let valorMBs = '104857600';
       let valorDisponible = ((104857600 - info.size) / 104857600 ) * 100;
       valorDisponible = valorDisponible.toFixed(2);
-      let valorUsado = (info.size / 104857600 ) *  1000;
+      let valorUsado = (info.size / 104857600 ) *  100;
       valorUsado = valorUsado.toFixed(2);
       Alert.alert('Información Disco Duro', `Espacio Total: 100 MBs\n Espacio Disponible: ${valorDisponible} MBs\n Espacio utilizado: ${valorUsado} MBs`);
   }
