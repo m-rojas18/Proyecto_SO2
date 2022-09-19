@@ -1,33 +1,65 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, FlatList, Alert} from "react-native";
+import {View, Text, StyleSheet, TouchableOpacity, FlatList, Alert, Dimensions} from "react-native";
 import { ArchivosContext } from '../context/ProveedorArchivos';
 import { FontAwesome5 } from '@expo/vector-icons';
 import * as FileSystem from 'expo-file-system';
-import * as Linking from 'expo-linking'
 import * as IntentLauncher from 'expo-intent-launcher';
+import { getInfoAsync } from 'expo-file-system';
 
 function ArchivosScreen() {
     const {listaArchivos, setListaArchivos, addArchivo, eliminarArchivo} = useContext(ArchivosContext);
-
     const [avisoArchivo,setAvisoArchivo] = useState('');
 
     const renderItem = ({item})  => {
         if(item.id != 0){
+            //Obtener informacion de archivo
+            let typeFile;
+            let substr = item.substring(item.indexOf("."));
+            if(substr == '.jpeg' || substr == '.jpg' || substr == '.png'){
+                typeFile = 'I';
+            } else if (substr == '.mp3'){   
+                typeFile = 'A';
+            } else {
+                /*Es un txt*/
+                typeFile = 'T'; 
+            }
             return (
                 <TouchableOpacity onPress={() => openFileIntent(item)}>
-                <Item nombre={item}></Item>
+                <Item nombre={item}  tipoArchivo={typeFile}></Item>
                 </TouchableOpacity>
             );
         }
     };
 
-    const Item = ({nombre} ) => {
-        return (<View style={styles.contenedorArchivo}> 
-                   <Text style={styles.informacionArchivo}> {nombre}</Text>
-                   <TouchableOpacity style={{flex:0.10}} onPress={() => removeArchivo({nombre})}>
-                        <FontAwesome5 name="trash" size={24} color="gray"/>
-                   </TouchableOpacity>
+    /*
+    const obtenerSizeArchivo = async (nombre) => {
+        let fileUri = FileSystem.documentDirectory + "DiscoDuro/" + nombre;
+        let datosArchivo = await FileSystem.getInfoAsync(fileUri);
+        renderItem(nombre, datosArchivo);
+    } 
+    */
+    const Item = ({nombre, tipoArchivo, sizeArchivo} ) => {
+        return (
+        <>
+            <View style={styles.contenedorArchivo}> 
+                <View style = {styles.leftContainer}>
+                    <View style ={styles.thumbnail}>
+                        <Text style={styles.thumbnailText}>{tipoArchivo}</Text>
+                    </View>
+                <View style={styles.nombreContainer}>
+                    <Text numberOfLines={1} style={styles.informacionArchivo}> {nombre}</Text>
                 </View>
+            </View>
+            <View style = {styles.rightContainer}>
+                <TouchableOpacity  onPress={() => removeArchivo({nombre})}>
+                    <FontAwesome5 name="trash" size={24} color="gray"/>
+            </TouchableOpacity>
+            </View>
+        
+            </View>
+        
+            <View style={styles.separator}/>
+        </>
         );
     };
     const removeArchivo = (nombre) => {
@@ -59,8 +91,9 @@ function ArchivosScreen() {
                 IntentLauncher.startActivityAsync("android.intent.action.VIEW", {
                 data: cUri,
                 flags: 1,
+                type: cUri.mimeType
+
                 });
-                console.log('SUCCESS!');
             });
         }catch(e)
         {
@@ -102,6 +135,7 @@ function ArchivosScreen() {
     );
 }
 
+const {width} = Dimensions.get('window');
 const styles = StyleSheet.create({
     ventana:{
         flex: 1,
@@ -109,24 +143,66 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffe4c4',
     },
     contenedorArchivo:{
-        height: 60,   
+        height: 60,
+        width: width - 5,   
         borderWidth : 0.5,
-        borderColor: "grey",
         flex:1,
+        alignSelf: 'center',
         flexDirection: 'row',
         backgroundColor : '#fff',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
       },
+      separadorContenedores: {
+        width: width - 5,
+        opacity: 0.3,
+        height: 0.5,
+        color: 'gray',
+        alignSelf: 'center',
+        marginTop: 10,
+      },
+      leftContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        flex: 1,
+      },
+    rightContainer :{
+        flexBasis: 50,
+        height: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     informacionArchivo:{
         fontSize: 14,
-        flex:0.90,
         color: '#000',
+    },
+    thumbnail : {
+        height: 50,
+        backgroundColor : 'grey',
+        flexBasis: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 25,
+    },
+    thumbnailText: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        color: 'white',
+    },
+    titleContainer : {
+        width: width -150,
+        paddingLeft: 10,
+        paddingRight: 10,
     },
     aviso:{
         justifyContent: 'flex-start',
         fontSize: 20,
         paddingBottom: 5,
+    },
+    sizeArchivo :{
+        color: 'gray',
+        opacity: 0.5,
+        fontSize: 10,
     },
 });
 

@@ -1,11 +1,23 @@
 import * as React from 'react';
-import {View, Text, StyleSheet, Button} from "react-native";
+import {View, Text, StyleSheet, Button, Alert} from "react-native";
+import * as FileSystem from 'expo-file-system'
 
 const Separator = () => (
   <View style={styles.separatorText} />
 );
 
 function HomeScreen ({ navigation }){
+
+  const verInformacionDiscoDuro = async () =>{
+      let disco = FileSystem.documentDirectory + "DiscoDuro";
+      let info = await FileSystem.getInfoAsync(disco);
+      let valorMBs = '104857600';
+      let valorDisponible = ((104857600 - info.size) / 104857600 ) * 100;
+      valorDisponible = valorDisponible.toFixed(2);
+      let valorUsado = (info.size / 104857600 ) *  1000;
+      valorUsado = valorUsado.toFixed(2);
+      Alert.alert('Información Disco Duro', `Espacio Total: 100 MBs\n Espacio Disponible: ${valorDisponible} MBs\n Espacio utilizado: ${valorUsado} MBs`);
+  }
     return (
         <View style={styles.ventanaInicio}>
           <Text style={styles.textoVI}>Sistema de Archivos</Text>
@@ -22,6 +34,10 @@ function HomeScreen ({ navigation }){
               onPress={() => navigation.navigate('Archivos')}
             />
             <Separator/>
+            <Button 
+            title = "Ver espacio DiscoDuro"
+            onPress={() => verInformacionDiscoDuro()}
+            />
           </View>
         </View>
     );

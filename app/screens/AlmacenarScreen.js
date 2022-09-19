@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useContext, useEffect} from 'react';
-import {View, Text, StyleSheet, Button, Image, Alert, TextInput} from "react-native";
+import {View, Text, StyleSheet, Button, Image, Alert, PermissionsAndroid} from "react-native";
 import * as DocumentPicker from 'expo-document-picker';
 import { ArchivosContext } from '../context/ProveedorArchivos';
 import * as FileSystem from 'expo-file-system';
@@ -38,11 +38,17 @@ function AlmacenScreen() {
 
   const elegirArchivo = async () => {
     const result = await DocumentPicker.getDocumentAsync({
-                  type: ['audio/*','image/*', 'text/plain', 'application/pdf'],
+                  type: ['audio/mpeg','image/*', 'text/plain'],
                   copyToCacheDirectory: false});
+    console.log(result);
+    if(result.type != 'cancel'){
+      setFileResponse(result);
+      setPlaceHolder(result.name);
+    } else {
+      setPlaceHolder('Nombre de Archivo');
+    }
     /*La opcion de elegir multiples archivos esta falso por Default */
-    setFileResponse(result);
-    setPlaceHolder(result.name);
+    
     //console.log(result);
     /*
     {Imagen
@@ -61,7 +67,7 @@ function AlmacenScreen() {
   const AlmacenarArchivo = async () => {
 
     let validar = true;
-    /*1. Validar que haya un archivo seleccionado*/
+    //1. Validar que haya un archivo seleccionado
     if(placeHolder != 'Nombre de Archivo'){
       //Se selecciono un arcivo
     }  else {
@@ -69,7 +75,7 @@ function AlmacenScreen() {
       validacionAlert('No se ha seleccionado un archivo para almacenar.');
     }
 
-    /*2. Validacion de que el nombre no sea igual*/
+    //2. Validacion de que el nombre no sea igual
     let discoUri = FileSystem.documentDirectory + "DiscoDuro/" + fileResponse.name;
     if(revisarNombreRep(fileResponse.name)){
       validar = false;
@@ -96,7 +102,6 @@ function AlmacenScreen() {
       setFileResponse('');
       setPlaceHolder('Nombre de Archivo');
     }
-
     /*Primero, mover archivos al documentDirectory*/
     }
 
