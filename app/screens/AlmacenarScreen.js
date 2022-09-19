@@ -40,7 +40,6 @@ function AlmacenScreen() {
     const result = await DocumentPicker.getDocumentAsync({
                   type: ['audio/mpeg','image/*', 'text/plain'],
                   copyToCacheDirectory: false});
-    console.log(result);
     if(result.type != 'cancel'){
       setFileResponse(result);
       setPlaceHolder(result.name);
@@ -76,7 +75,6 @@ function AlmacenScreen() {
     }
 
     //2. Validacion de que el nombre no sea igual
-    let discoUri = FileSystem.documentDirectory + "DiscoDuro/" + fileResponse.name;
     if(revisarNombreRep(fileResponse.name)){
       validar = false;
       validacionAlert('Un archivo en el disco ya tiene ese nombre, cambiarlo para poder almacenar.');
@@ -87,12 +85,25 @@ function AlmacenScreen() {
     //100 MB-> 104857600 bytes (en binario)
     if(directoryInfo.size < 104857600){
       //No ha llegado al limite de 100 MBs
+
+      /*4. Revisar que archivo a almacenar no haga que se pase de 100 MBs*/
+      let verificarEspacio = directoryInfo.size + fileResponse.size;
+      let valorDisponible = ((104857600 - directoryInfo.size) / 104857600 ) * 100;
+      valorDisponible = valorDisponible.toFixed(2);
+      let sizeArchivo = (fileResponse.size / 104857600) * 100;
+      sizeArchivo = sizeArchivo.toFixed(2); 
+      if(verificarEspacio > 104857600){
+        validar = false;
+        validacionAlert(`El disco duro no tiene suficiente espacio para almacenar el archivo.\nEspacio disponible: ${valorDisponible} MBs \nTamaño archivo: ${sizeArchivo} MBs`);
+      }
+
     } else {
       validar = false;
       validacionAlert('El disco de la aplicación ya llego a su limite de 100 MBs');
     }
 
     if(validar){
+      let discoUri = FileSystem.documentDirectory + "DiscoDuro/" + fileResponse.name;
       //Paso las 3 validaciones, almacenar en app y actualizar lista global
       await FileSystem.copyAsync({from: fileResponse.uri, to: discoUri});
       addArchivo(fileResponse.name);

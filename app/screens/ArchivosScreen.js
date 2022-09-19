@@ -14,10 +14,10 @@ function ArchivosScreen() {
         if(item.id != 0){
             //Obtener informacion de archivo
             let typeFile;
-            let substr = item.substring(item.indexOf("."));
-            if(substr == '.jpeg' || substr == '.jpg' || substr == '.png'){
+            let string = item;
+            if(string.includes('.png') || string.includes('.jpeg') || string.includes('.jpg')){
                 typeFile = 'I';
-            } else if (substr == '.mp3'){   
+            } else if (string.includes('.mp3')){   
                 typeFile = 'A';
             } else {
                 /*Es un txt*/

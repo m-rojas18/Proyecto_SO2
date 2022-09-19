@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet,StatusBar} from 'react-native';
+import { StyleSheet,StatusBar, Alert} from 'react-native';
 import { useEffect } from 'react';
 import AppNavigator from './app/navigation/AppNavigator';
 import ProveedorArchivos, { ArchivosContext }from './app/context/ProveedorArchivos';
@@ -10,47 +10,14 @@ function App() {
 
   const escribirDirectorio= async () => {
 
-    const permiso = await MediaLibrary.requestPermissionsAsync();
-    let discUri = FileSystem.documentDirectory + "DiscoDuro";
-    if(permiso.granted){
-      const revisarExiste = FileSystem.getInfoAsync(discUri);
-      if(!(await revisarExiste).exists){
-        //No existe el directorio
-        //Creacion de directorio
+      let discUri = FileSystem.documentDirectory + "DiscoDuro";
+      let verificar = await FileSystem.getInfoAsync(discUri);
+      if(!verificar.exists){
         await FileSystem.makeDirectoryAsync(discUri);
-        const a = FileSystem.getInfoAsync(discUri);
-      } else {
-
-        /*Validar que el tamaño del directorio no pase de 100 MB*/ 
-
-        /*const hola = await FileSystem.readDirectoryAsync(FileSystem.documentDirectory);
-        console.log(hola);*/
+        Alert.alert("Aviso", 'Se ha generado el disco duro con un espacio de 100MBs');
       }
-      
-
-     // await FileSystem.writeAsStringAsync(fileUri,"Hola Mundo123", {encoding: FileSystem.EncodingType.Base64});
-      //console.log(fileUri);
-      //const hola = await FileSystem.readDirectoryAsync(FileSystem.documentDirectory);
-      //console.log(hola);
-      
-      /*
-      const leer = await  FileSystem.readAsStringAsync(fileUri, {encoding: FileSystem.EncodingType.Base64});
-      console.log(leer);*/
-      //const existeArchivo = FileSystem.getInfoAsync(FileSystem.documentDirectory + "Hola.txt");
-      //console.log((await existeArchivo).size);
-      /*const asset = await MediaLibrary.createAssetAsync(fileUri);
-      await MediaLibrary.createAlbumAsync("Download", asset, false);*/
-      //
-      
-
-      //console.log((await existeArchivo).exists)
      
-      //await FileSystem.deleteAsync(FileSystem.documentDirectory + "Hola.txt");
-      //const leerDirectorio = FileSystem.readDirectoryAsync(FileSystem.documentDirectory);
-      //console.log(leerDirectorio);
-
-    }
-    
+      await MediaLibrary.getPermissionsAsync();
    
   }
 

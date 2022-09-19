@@ -36,7 +36,7 @@ const ProveedorArchivos = ({children}) => {
             }
             
         });
-        console.log(newListaArchivos);
+        //console.log(newListaArchivos);
         setListaArchivos(newListaArchivos);
         //Eliminar Archivo del document Directory
         const discoDuro = FileSystem.documentDirectory + "DiscoDuro/" + archivoComparar.nombre;
@@ -61,10 +61,10 @@ const ProveedorArchivos = ({children}) => {
     const permisoAlert = () => {
         Alert.alert("Permiso Requerido", "Esta aplicacion requiere de este permiso para leer archivos y funcionar",
             [{
-                text: 'Ok',
-                onPress: () => this.getPermisos()
+                text: 'Cancel',
             },{
-                text: 'Cancel'
+                text: 'Ok',
+                onPress: () => getPermiso()
             }
             ]);
     }
@@ -115,6 +115,7 @@ const ProveedorArchivos = ({children}) => {
                 //Para caso que el usuario ponga "NeverAskAgain"
                 if(status == 'denied' && !canAskAgain){
                     //Presentar un error al usuario
+                    permisoAlert();
                     setpermisoLeer('false');
                 }
             }
